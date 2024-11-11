@@ -1,0 +1,216 @@
+[
+  {
+    "@type": "accordion",
+    "collapsed": false,
+    "data": {
+      "blocks": {
+        "7197c88e-3fcd-453f-a8ae-0f79b940f750": {
+          "@type": "accordionPanel",
+          "blocks": {
+            "d4c5b20d-09f9-4a27-a191-8a0a206ec524": {
+              "@type": "slate",
+              "plaintext": "Or just a text or",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Or just a text or "
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "d6fc7125-8c6c-499a-b624-3255ac65da6b": {
+              "@type": "slate",
+              "plaintext": "two.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "two."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "d4c5b20d-09f9-4a27-a191-8a0a206ec524",
+              "d6fc7125-8c6c-499a-b624-3255ac65da6b"
+            ]
+          },
+          "title": "Accordeon Title 3"
+        },
+        "89ea6e38-fa80-4578-b01d-05ebfa7024a5": {
+          "@type": "accordionPanel",
+          "blocks": {
+            "0ae68392-d1c3-48f5-af71-cf8dc791ee8d": {
+              "@type": "image",
+              "align": "center",
+              "alt": "",
+              "format": "large",
+              "image_field": "image",
+              "size": "l",
+              "url": "../../../../../resolveuid/4f95469879d147158d17cccad06f473a"
+            },
+            "3afc845d-15cc-4219-88f8-69bd55c07c11": {
+              "@type": "slate",
+              "plaintext": "After that there can be normal text again. Everything will be inside the accordeon until there is either a new accordeon title or the block has ended.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "After that there can be normal text again. Everything will be inside the accordeon until there is either a new accordeon title or the block has ended."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "78b7eb1f-e096-400d-82eb-3ebf1b760fcf": {
+              "@type": "slate",
+              "plaintext": "Or an imag in the second tab:",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Or an imag in the second tab:"
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "78b7eb1f-e096-400d-82eb-3ebf1b760fcf",
+              "0ae68392-d1c3-48f5-af71-cf8dc791ee8d",
+              "3afc845d-15cc-4219-88f8-69bd55c07c11"
+            ]
+          },
+          "title": "Accordeon Title 2"
+        },
+        "dff2798b-5eeb-4978-af89-7a0b0bdeadfa": {
+          "@type": "accordionPanel",
+          "blocks": {
+            "4cf1b2db-787d-4348-b0f9-37972ab8e16f": {
+              "@type": "slate",
+              "plaintext": "It is also possible to have content like images, tables or buttons inside. Here is a small example of a table:",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "It is also possible to have content like images, tables or buttons inside. Here is a small example of a table:"
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "6b9b0953-ad25-40ba-b2f2-d68765264927": {
+              "@type": "slate",
+              "plaintext": "A accordeon in our old website is built automatically when using specific classes for the title of the accordeon-tab. Each content before the next accordeon title will be inside this accordeon tab.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "A accordeon in our old website is built automatically when using specific classes for the title of the accordeon-tab. Each content before the next accordeon title will be inside this accordeon tab."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "ade83712-5ca7-40e8-b8fa-eedf95888c8a": {
+              "@type": "slate",
+              "plaintext": "And some text after the table.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "And some text after the table."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "c7b2ec09-07ea-4406-8072-fbaa9849227e": {
+              "table_field": {
+                "hideHeaders": false
+              },
+              "@type": "slateTable",
+              "table": {
+                "basic": true,
+                "celled": false,
+                "compact": false,
+                "fixed": true,
+                "hideHeaders": false,
+                "inverted": false,
+                "rows": [
+                  {
+                    "cells": [
+                      {
+                        "key": "em4gr",
+                        "type": "data",
+                        "value": [
+                          {
+                            "children": [
+                              {
+                                "text": "Very small table with two columns"
+                              }
+                            ],
+                            "type": "p"
+                          }
+                        ]
+                      },
+                      {
+                        "key": "7qsa1",
+                        "type": "data",
+                        "value": [
+                          {
+                            "children": [
+                              {
+                                "text": "This is the second column"
+                              }
+                            ],
+                            "type": "p"
+                          }
+                        ]
+                      }
+                    ],
+                    "key": "6np5e"
+                  }
+                ],
+                "striped": false
+              }
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "6b9b0953-ad25-40ba-b2f2-d68765264927",
+              "4cf1b2db-787d-4348-b0f9-37972ab8e16f",
+              "c7b2ec09-07ea-4406-8072-fbaa9849227e",
+              "ade83712-5ca7-40e8-b8fa-eedf95888c8a"
+            ]
+          },
+          "title": "Accordeon Title 1"
+        }
+      },
+      "blocks_layout": {
+        "items": [
+          "dff2798b-5eeb-4978-af89-7a0b0bdeadfa",
+          "89ea6e38-fa80-4578-b01d-05ebfa7024a5",
+          "7197c88e-3fcd-453f-a8ae-0f79b940f750"
+        ]
+      }
+    },
+    "filtering": false,
+    "non_exclusive": false,
+    "right_arrows": true
+  }
+]

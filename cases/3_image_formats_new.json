@@ -1,0 +1,137 @@
+[
+  {
+    "@type": "slate",
+    "value": [
+      {
+        "children": [
+          {
+            "text": "We had many different image formats:"
+          }
+        ],
+        "type": "p"
+      }
+    ],
+    "plaintext": "We had many different image formats:"
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Big, no text wrap",
+    "tag": "h2"
+  },
+  {
+    "align": "center",
+    "size": "l",
+    "format": "large",
+    "@type": "image",
+    "alt": "",
+    "image_field": "image",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b",
+    "description": "Image legend text! Should belong to the image."
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Big, with text wrap (not existing, takes full space)",
+    "tag": "h2"
+  },
+  {
+    "align": "center",
+    "size": "l",
+    "format": "large",
+    "@type": "image",
+    "alt": "",
+    "image_field": "image",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b"
+  },
+  {
+    "@type": "slate",
+    "value": [
+      {
+        "type": "p",
+        "children": [
+          {
+            "text": "Example text in between"
+          }
+        ]
+      }
+    ],
+    "plaintext": "Example text in between"
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Third, no text wrap",
+    "tag": "h2"
+  },
+  {
+    "@type": "image",
+    "align": "center",
+    "alt": "",
+    "format": "third",
+    "image_field": "image",
+    "size": "l",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b"
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Third, with text wrap",
+    "tag": "h2"
+  },
+  {
+    "align": "left",
+    "size": "l",
+    "format": "third",
+    "@type": "image",
+    "alt": "",
+    "image_field": "image",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b",
+    "description": "Image legend text! Should belong to the image."
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Half, no text wrap",
+    "tag": "h2"
+  },
+  {
+    "@type": "image",
+    "align": "center",
+    "alt": "",
+    "format": "half",
+    "image_field": "image",
+    "size": "l",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b"
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Half, with text wrap",
+    "tag": "h2"
+  },
+  {
+    "@type": "image",
+    "align": "left",
+    "alt": "",
+    "format": "half",
+    "image_field": "image",
+    "size": "l",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b"
+  },
+  {
+    "@type": "heading",
+    "alignment": "left",
+    "heading": "Portrait, with text wrap",
+    "tag": "h2"
+  },
+  {
+    "@type": "image",
+    "align": "left",
+    "alt": "",
+    "format": "portrait",
+    "image_field": "image",
+    "size": "l",
+    "url": "../../../../../../resolveuid/e798419b0f5f49e38f95b57938ce1d7b"
+  }
+]

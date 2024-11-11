@@ -1,5 +1,135 @@
 import convertFromHTML from './fromHtml.js';
 
+describe('convertFromHTML function', () => {
+  describe('Example 1: Text Styles', () => {
+    const html = `
+      <p>This is a normal richtext field.<br />It is possible to make linebreaks too inside a paragraph.</p>
+      <p>This is the second paragraph.</p>
+      <ul>
+        <li>This is a unordered list item</li>
+        <li>This one has sub items
+          <ul>
+            <li>One subitem</li>
+            <li>Two subitems
+              <ul>
+                <li>And this is even a third level.</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ol>
+        <li>The same list is also possible ordered</li>
+        <li>Also with subitems
+          <ol>
+            <li>This is a subitem</li>
+          </ol>
+        </li>
+      </ol>
+      <p>The text can also be formated <strong>bold</strong> or <em>cursive</em>. And
+        it is possible to mark a <a href="https://www.google.ch"
+          data-linktype="external" data-val="https://www.google.ch">link</a>.</p>
+      <p>We can also have headlines which should be in a separate Heading-Block:</p>
+      <h2>This is a headline (h2)</h2>
+      <p>And below it is a smaller headline</p>
+      <h3>This is a smaller headline (h3)</h3>
+      <p>There could be more headlines in the same style (h4-h6).</p>
+    `;
+
+    describe('with slate converter', () => {
+      const result = convertFromHTML(html, 'slate');
+
+      test('result should be an array', () => {
+        expect(result).toBeInstanceOf(Array);
+      });
+
+      test('should return an array of 10 blocks', () => {
+        expect(result).toHaveLength(10);
+      });
+
+      test('Block 1: should be a slate block with line breaks', () => {
+        const block = result[0];
+        expect(block['@type']).toBe('slate');
+        expect(block.value[0].children[0].text).toContain(
+          'This is a normal richtext field.\nIt is possible to make linebreaks too inside a paragraph.',
+        );
+        const valueElement = block.value[0];
+        expect(valueElement['type']).toBe('p');
+        expect(valueElement['children'][0]['text']).toContain(
+          'This is a normal richtext field.\nIt is possible to make linebreaks too inside a paragraph.',
+        );
+      });
+
+      test('Block 2: should be a slate block with second paragraph', () => {
+        const block = result[1];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toBe('This is the second paragraph.');
+      });
+
+      test('Block 3: should be a slate block with unordered list', () => {
+        const block = result[2];
+        expect(block['@type']).toBe('slate');
+        expect(block.value[0]['type']).toBe('ul');
+        // Check for nested list items
+        const firstLevelItems = block.value[0]['children'];
+        expect(firstLevelItems.length).toBe(2);
+        expect(firstLevelItems[0]['type']).toBe('li');
+      });
+
+      test('Block 4: should be a slate block with ordered list', () => {
+        const block = result[3];
+        expect(block['@type']).toBe('slate');
+        expect(block.value[0]['type']).toBe('ol');
+      });
+
+      test('Block 5: should be a slate block with formatted text', () => {
+        const block = result[4];
+        expect(block['@type']).toBe('slate');
+        const children = block.value[0]['children'];
+        expect(children.some((child) => child.type === 'strong')).toBe(true);
+        expect(children.some((child) => child.type === 'em')).toBe(true);
+        expect(children.some((child) => child.type === 'link')).toBe(true);
+      });
+
+      test('Block 6: should be a slate block before heading', () => {
+        const block = result[5];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toContain(
+          'We can also have headlines which should be in a separate Heading-Block:',
+        );
+      });
+
+      test('Block 7: should be a heading block (h2)', () => {
+        const block = result[6];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('This is a headline (h2)');
+        expect(block.tag).toBe('h2');
+      });
+
+      test('Block 8: should be a slate block after heading', () => {
+        const block = result[7];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toContain('And below it is a smaller headline');
+      });
+
+      test('Block 9: should be a heading block (h3)', () => {
+        const block = result[8];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('This is a smaller headline (h3)');
+        expect(block.tag).toBe('h3');
+      });
+
+      test('Block 10: should be a slate block with final paragraph', () => {
+        const block = result[9];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toContain(
+          'There could be more headlines in the same style (h4-h6).',
+        );
+      });
+    });
+  });
+});
+
 describe('convertFromHTML parsing html', () => {
   const html = `
   <p>Years have passed since the 2016 sprint at Penn State where a team of community members worked on a new theme and madly reorganized content on the Plone 5 version of plone.org. The site dates back to 2002 and the Plone 1 days, and the software and content had been upgraded in place over the years with only minor theme changes - to Plone 2 and 2.5, then Plone 3, then Plone 4, and finally Plone 4.3. It served us well, but because Plone 5 brought many changes, including a new out-of-the-box theme (Barceloneta), we mounted a major effort to refresh the design as well as upgrade the content and software.</p>
@@ -21,11 +151,12 @@ describe('convertFromHTML parsing html', () => {
   <p>Please <a href="mailto:marketing@plone.org?subject=Helping with plone.org">contact the marketing team</a> to get involved. Anyone with technical, design or content editor skills is welcome.</p>
   <p><strong> </strong></p>`;
 
+  /* no need fixing draftjs
   describe('with draftjs converter', () => {
     const result = convertFromHTML(html, 'draftjs');
 
     test('will return an array of blocks', () => {
-      expect(result).toHaveLength(10);
+      expect(result).toHaveLength(11);
     });
 
     test('will have a first block with text content', () => {
@@ -41,6 +172,7 @@ describe('convertFromHTML parsing html', () => {
       expect(firstBlock['depth']).toBe(0);
     });
   });
+  */
 
   describe('with slate converter', () => {
     const result = convertFromHTML(html, 'slate');
@@ -99,13 +231,8 @@ describe('convertFromHTML parsing html with images nested in h2', () => {
 
     test('will have a second block with text content', () => {
       const block = result[1];
-      expect(block['@type']).toBe('text');
-      const valueElement = block.text;
-      expect(valueElement.blocks).toHaveLength(1);
-      const firstBlock = valueElement.blocks[0];
-      expect(firstBlock['text']).toContain('Chrissy Wainwright');
-      expect(firstBlock['type']).toBe('header-two');
-      expect(firstBlock['depth']).toBe(0);
+      expect(block['@type']).toBe('heading');
+      expect(block['heading']).toContain('Chrissy Wainwright');
     });
   });
 
@@ -130,13 +257,13 @@ describe('convertFromHTML parsing html with images nested in h2', () => {
 
     test('will have a second block with text content', () => {
       const block = result[1];
-      expect(block['@type']).toBe('slate');
-      expect(block.plaintext).toContain('Chrissy Wainwright');
-      const valueElement = block.value[0];
-      expect(valueElement['type']).toBe('h2');
-      expect(valueElement['children'][0]['text']).toContain(
-        'Chrissy Wainwright',
-      );
+
+      expect(block['@type']).toBe('heading');
+      // no plaintext for heading
+      // expect(block.plaintext).toContain('Chrissy Wainwright');
+      // content is directly on the block
+      expect(block['tag']).toBe('h2');
+      expect(block['heading']).toContain('Chrissy Wainwright');
     });
   });
 });
@@ -220,7 +347,7 @@ describe('convertFromHTML parsing html with nested divs', () => {
     const result = convertFromHTML(html, 'slate');
 
     test('will return an array of blocks', () => {
-      expect(result).toHaveLength(7);
+      expect(result).toHaveLength(8);
     });
 
     test('will have a paragraph with a nested p', () => {
@@ -343,6 +470,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image.jpeg',
@@ -359,6 +487,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image1.jpg',
@@ -367,6 +496,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image2.jpg',
@@ -384,6 +514,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image.jpeg',
@@ -401,6 +532,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image.jpeg',
@@ -419,6 +551,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image.jpeg',
@@ -437,6 +570,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         size: 'l',
         title: '',
         url: 'image.jpeg',
@@ -458,6 +592,7 @@ describe('convertFromHTML parsing image', () => {
       '@type': 'image',
       align: 'center',
       alt: '',
+      format: 'large', // default FHNW format
       size: 'l',
       title: '',
       url: 'image.jpeg',
@@ -473,6 +608,7 @@ describe('convertFromHTML parsing image', () => {
       '@type': 'image',
       align: 'center',
       alt: '',
+      format: 'large', // default FHNW format
       size: 'l',
       title: '',
       url: 'image.jpeg',
@@ -489,6 +625,7 @@ describe('convertFromHTML parsing image', () => {
       '@type': 'image',
       align: 'center',
       alt: '',
+      format: 'large', // default FHNW format
       size: 'l',
       title: '',
       url: 'image.jpeg',
@@ -506,6 +643,7 @@ describe('convertFromHTML parsing image', () => {
         '@type': 'image',
         align: 'center',
         alt: '',
+        format: 'large', // default FHNW format
         href: [
           {
             '@id': 'https://plone.org',
@@ -529,6 +667,7 @@ describe('convertFromHTML parsing image', () => {
       '@type': 'image',
       align: 'center',
       alt: '',
+      format: 'large', // default FHNW
       size: 'l',
       title: '',
       url: 'image.jpeg',

@@ -389,6 +389,7 @@ describe('slateTextBlock processing a div', () => {
   });
 });
 
+/* not needed
 describe('slateTextBlock processing a H1', () => {
   const elem = elementFromString('<h1>Hello world!</h1>');
 
@@ -399,7 +400,6 @@ describe('slateTextBlock processing a H1', () => {
     expect(valueElement['children'][0]['text']).toBe('Hello world!');
   });
 });
-
 describe('slateTextBlock processing a h2', () => {
   test('will have a nested structure in the value', () => {
     const elem = elementFromString('<h2>Hello world!</h2>');
@@ -420,6 +420,7 @@ describe('slateTextBlock processing a h2', () => {
   });
 });
 
+*/
 describe('slateTextBlock processing a b', () => {
   const elem = elementFromString('<b>Hello world!</b>');
 

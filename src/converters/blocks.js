@@ -1,15 +1,16 @@
+// blocks.js
 import { alignFromClassName, scaleFromUrl } from '../helpers/image.js';
 import { getYTVideoId } from '../helpers/video.js';
 
-const imageBlock = (elem, href) => {
-  // strip /@@images/image if present
+const imageBlock = (elem, href, nextElem) => {
+  // Strip /@@images/image if present
   const url = elem.src.split('/@@images')[0];
 
   const block = {
     '@type': 'image',
     url,
-    alt: elem.alt,
-    title: elem.title,
+    alt: elem.alt || '',
+    title: elem.title || '',
   };
 
   if (href) {
@@ -22,42 +23,94 @@ const imageBlock = (elem, href) => {
     ];
   }
 
-  switch (alignFromClassName(elem.className)) {
-    case 'left':
-      block.align = 'left';
-      block.size = 'm';
-      break;
-    case 'right':
-      block.align = 'right';
-      block.size = 'm';
-      break;
-    case 'center':
-      block.align = 'center';
-      block.size = 'l';
-      break;
-  }
+  // Map class names to image formats and alignments
+  const classMap = {
+    'fhnw-tiny-large': { format: 'large', align: 'center' },
+    'fhnw-tiny-large-float': { format: 'large', align: 'left' },
+    'fhnw-tiny-onethird-no-float': { format: 'third', align: 'center' },
+    'fhnw-tiny-onethird': { format: 'third', align: 'left' },
+    'fhnw-tiny-square': { format: 'half', align: 'center' },
+    'fhnw-tiny-square-float': { format: 'half', align: 'left' },
+    'fhnw-tiny-portrait': { format: 'portrait', align: 'left' },
+  };
 
-  const scale = scaleFromUrl(elem.src);
-  if (scale !== null) {
-    switch (scale) {
-      case 'large':
-        block.size = 'l';
-        break;
-      case 'thumb':
-      case 'tile':
-        block.size = 's';
-        break;
-      default:
-        block.size = 'm';
-        break;
+  let fhnwImage = false;
+  // Set format and align based on class
+  const classNames = elem.className.split(' ');
+  for (const className of classNames) {
+    if (classMap[className]) {
+      // fhnw way
+      block.format = classMap[className].format;
+      block.align = classMap[className].align;
+      block.size = 'l';
+      fhnwImage = true;
+      break;
     }
   }
 
-  // pass through data attributes to block data
+  if (!block.format) {
+    // default for fhnw
+    block.format = 'large';
+  }
+
+  // plone way
+  if (!fhnwImage) {
+    switch (alignFromClassName(elem.className)) {
+      case 'left':
+        block.align = 'left';
+        block.size = 'm';
+        break;
+      case 'right':
+        block.align = 'right';
+        block.size = 'm';
+        break;
+      case 'center':
+        block.align = 'center';
+        block.size = 'l';
+        break;
+    }
+
+    const scale = scaleFromUrl(elem.src);
+    if (scale !== null) {
+      switch (scale) {
+        case 'large':
+          block.size = 'l';
+          break;
+        case 'thumb':
+        case 'tile':
+          block.size = 's';
+          break;
+        default:
+          block.size = 'm';
+          break;
+      }
+    }
+  }
+
+  // Set image description from the next element if it's a caption
+  if (
+    nextElem &&
+    nextElem.tagName === 'P' &&
+    nextElem.classList.contains('richtext__imagelegend')
+  ) {
+    block.description = nextElem.textContent;
+  }
+
+  // Pass through data attributes to block data
   for (const [k, v] of Object.entries(elem.dataset)) {
     block[k] = v;
   }
 
+  return block;
+};
+
+const headingBlock = (elem) => {
+  const block = {
+    '@type': 'heading',
+    alignment: 'left',
+    heading: elem.textContent,
+    tag: elem.tagName.toLowerCase(),
+  };
   return block;
 };
 
@@ -99,12 +152,20 @@ const elementsWithConverters = {
   IMG: imageBlock,
   VIDEO: videoBlock,
   IFRAME: iframeBlock,
+  // Added heading tags to elementsWithConverters
+  H1: headingBlock,
+  H2: headingBlock,
+  H3: headingBlock,
+  H4: headingBlock,
+  H5: headingBlock,
+  H6: headingBlock,
 };
 
 export {
   iframeBlock,
   imageBlock,
   videoBlock,
+  headingBlock, // Export headingBlock
   getYTVideoId,
   elementsWithConverters,
 };

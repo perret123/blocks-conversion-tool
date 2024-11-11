@@ -1,3 +1,4 @@
+// slate.js
 import { jsx } from 'slate-hyperscript';
 import { Text } from 'slate';
 import { elementsWithConverters } from './blocks.js';
@@ -166,7 +167,6 @@ const divTagDeserializer = (el) => {
     ) {
       return jsx('text', {}, ' ');
     } else if (elementsWithConverters.hasOwnProperty(child.tagName)) {
-      // If we have a child element that has its own converter, use it
       return elementsWithConverters[child.tagName](child);
     }
   }
@@ -181,10 +181,22 @@ const divTagDeserializer = (el) => {
       } else if (child.nodeName === 'DIV') {
         return divTagDeserializer(child);
       } else {
-        return jsx('fragment', {}, deserialize(child));
+        const deserializedChild = deserialize(child);
+        if (!deserializedChild) {
+          return null;
+        } else if (
+          typeof deserializedChild === 'object' &&
+          deserializedChild['@type']
+        ) {
+          return null; // Skip blocks handled elsewhere
+        } else {
+          return jsx('fragment', {}, deserializedChild);
+        }
       }
     })
-    .flat();
+    .flat()
+    .filter((x) => x);
+
   return jsx('fragment', {}, children);
 };
 
@@ -200,12 +212,6 @@ const htmlTagsToSlate = {
   BLOCKQUOTE: blockTagDeserializer('blockquote'),
   DEL: blockTagDeserializer('s'),
   EM: blockTagDeserializer('em'),
-  H1: blockTagDeserializer('h1'),
-  H2: blockTagDeserializer('h2'),
-  H3: blockTagDeserializer('h3'),
-  H4: blockTagDeserializer('h4'),
-  H5: blockTagDeserializer('h5'),
-  H6: blockTagDeserializer('h6'),
   I: blockTagDeserializer('em'),
   P: blockTagDeserializer('p'),
   S: blockTagDeserializer('s'),
@@ -252,9 +258,17 @@ const deserialize = (el) => {
     return '';
   } else if (htmlTagsToSlate[nodeName]) {
     return htmlTagsToSlate[nodeName](el);
+  } else if (elementsWithConverters.hasOwnProperty(nodeName)) {
+    // Skip elements handled elsewhere (like headings)
+    return null;
   }
 
-  return deserializeChildren(el); // fallback deserializer
+  const deserializedChildren = deserializeChildren(el);
+  if (deserializedChildren.length === 0) {
+    return null;
+  } else {
+    return deserializedChildren;
+  }
 };
 
 const createCell = (type, value) => {
@@ -341,7 +355,7 @@ const slateTextBlock = (elem) => {
   if (typeof value === 'object' && value.hasOwnProperty('@type')) {
     // Return block information if it was processed somewhere else
     // in the codebase
-    if (['image', 'html', 'video'].includes(value['@type'])) {
+    if (['image', 'html', 'video', '__button'].includes(value['@type'])) {
       return value;
     }
   } else if (!Array.isArray(value)) {
@@ -350,7 +364,10 @@ const slateTextBlock = (elem) => {
   value = jsx('fragment', {}, value);
   block['@type'] = 'slate';
   block.value = value;
-  block.plaintext = elem.textContent;
+
+  // Clean up plaintext
+  block.plaintext = elem.textContent.replace(/[\n\t]/g, '');
+
   return block;
 };
 
