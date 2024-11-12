@@ -4,7 +4,8 @@ import {
   iframeBlock,
   imageBlock,
   videoBlock,
-  headingBlock, // Added headingBlock import
+  headingBlock,
+  buttonBlock,
 } from './blocks.js';
 import { draftTableBlock, draftTextBlock } from './draftjs.js';
 import { slateTableBlock, slateTextBlock } from './slate.js';
@@ -68,7 +69,13 @@ const shouldKeepWrapper = (el) => {
   return true;
 };
 
-const blockFromElement = (el, defaultTextBlock, href, nextElem) => {
+/**
+ * @param {Element} el
+ * @param {string} defaultTextBlock
+ * @param {string} href
+ * @param {Element} imageLegendEl
+ */
+const blockFromElement = (el, defaultTextBlock, href, imageLegendEl) => {
   let textBlock = slateTextBlock;
   let tableBlock = slateTableBlock;
   if (defaultTextBlock === 'draftjs') {
@@ -78,7 +85,7 @@ const blockFromElement = (el, defaultTextBlock, href, nextElem) => {
   let raw = {};
   switch (el.tagName) {
     case 'IMG':
-      raw = imageBlock(el, href, nextElem); // Pass nextElem to imageBlock
+      raw = imageBlock(el, href, imageLegendEl); // Pass nextElem to imageBlock
       break;
     case 'VIDEO':
       raw = videoBlock(el);
@@ -99,7 +106,15 @@ const blockFromElement = (el, defaultTextBlock, href, nextElem) => {
       raw = headingBlock(el);
       break;
     default:
-      raw = textBlock(el);
+      if (
+        el.tagName === 'A' &&
+        (el.classList.contains('tiny_link_button_primary') ||
+          el.classList.contains('tiny_link_button_secondary'))
+      ) {
+        raw = buttonBlock(el);
+      } else {
+        raw = textBlock(el);
+      }
       break;
   }
   return raw;
@@ -113,6 +128,7 @@ const skipCommentsAndWhitespace = (elements) => {
     if (node.nodeType === TEXT_NODE && isWhitespace(node.textContent)) {
       return false;
     }
+    /*
     if (node.nodeType === ELEMENT_NODE) {
       // Ignore empty elements
       if (
@@ -122,33 +138,80 @@ const skipCommentsAndWhitespace = (elements) => {
         return false;
       }
     }
+      */
     return true;
   });
 };
 
-const extractElementsWithConverters = (el, defaultTextBlock, href) => {
+const extractElementsWithConverters = (
+  el,
+  defaultTextBlock,
+  href,
+  elements,
+  currentIndex,
+  skippableElements,
+) => {
   const result = [];
   if (el.tagName === 'A') {
     href = el.getAttribute('href');
   }
+
   // First, traverse all childNodes
   for (const child of Array.from(el.childNodes)) {
+    if (skippableElements && skippableElements.includes(child)) {
+      continue;
+    }
     const tmpResult = extractElementsWithConverters(
       child,
       defaultTextBlock,
       href,
+      elements,
+      currentIndex,
+      skippableElements,
     );
     if (tmpResult.length > 0) {
       result.push(...tmpResult);
     }
   }
-  if (elementsWithConverters.includes(el.tagName)) {
+
+  if (
+    elementsWithConverters.includes(el.tagName) ||
+    (el.tagName === 'A' &&
+      (el.classList.contains('tiny_link_button_primary') ||
+        el.classList.contains('tiny_link_button_secondary')))
+  ) {
     const parent = el.parentElement;
     if (parent) {
       parent.removeChild(el);
     }
+
+    // find if in the next element there is a imagelegend
+    let imageLegendEl;
+    if (el.tagName === 'IMG') {
+      const nextEl = elements[currentIndex + 1];
+      if (nextEl) {
+        if (
+          nextEl.tagName === 'P' &&
+          nextEl.classList.contains('richtext__imagelegend')
+        ) {
+          imageLegendEl = nextEl;
+          skippableElements.push(imageLegendEl);
+        } else {
+          for (const child of nextEl.childNodes) {
+            if (
+              child.tagName === 'P' &&
+              child.classList.contains('richtext__imagelegend')
+            ) {
+              imageLegendEl = child;
+              skippableElements.push(imageLegendEl);
+            }
+          }
+        }
+      }
+    }
+
     if (shouldKeepWrapper(el)) {
-      result.push(blockFromElement(el, defaultTextBlock, href));
+      result.push(blockFromElement(el, defaultTextBlock, href, imageLegendEl));
     }
   }
 
@@ -183,33 +246,55 @@ const convertFromHTML = (input, defaultTextBlock) => {
   let isInsideAccordion = false;
   let currentAccordion = null;
   let currentAccordionPanel = null;
-  let contentOfCurrentAccordionPanel = [];
   let generateId = () => Math.random().toString(36).substr(2, 9);
+
+  // stores elements to be skipped, like imagelegends
+  let skippableElements = [];
 
   // Process elements
   let i = 0;
   while (i < elements.length) {
     let blocks = [];
     const el = elements[i];
+
+    if (skippableElements && skippableElements.includes(el)) {
+      i++;
+      continue;
+    }
     const href = el.getAttribute ? el.getAttribute('href') : null;
     const children = Array.from(el.childNodes);
 
     // Check for accordion title
-    if (el.tagName === 'P' && el.classList.contains('tiny_accordeon_title')) {
+    if (
+      el.tagName === 'P' &&
+      (el.classList.contains('tiny_accordeon_title') ||
+        el.classList.contains('tiny_tabnavigation_title'))
+    ) {
+      const isTabNavigation = el.classList.contains('tiny_tabnavigation_title');
+
       // Start or continue an accordion
       if (!isInsideAccordion) {
         isInsideAccordion = true;
-        currentAccordion = {
-          '@type': 'accordion',
-          collapsed: false,
-          data: {
-            blocks: {},
-            blocks_layout: { items: [] },
-          },
-          filtering: false,
-          non_exclusive: false,
-          right_arrows: true,
-        };
+        currentAccordion = isTabNavigation
+          ? {
+              '@type': 'tabs_block',
+              variation: 'default',
+              data: {
+                blocks: {},
+                blocks_layout: { items: [] },
+              },
+            }
+          : {
+              '@type': 'accordion',
+              collapsed: false,
+              data: {
+                blocks: {},
+                blocks_layout: { items: [] },
+              },
+              filtering: false,
+              non_exclusive: false,
+              right_arrows: true,
+            };
       } else if (currentAccordionPanel) {
         // Close previous panel
         currentAccordion.data.blocks[currentAccordionPanel.id] =
@@ -219,41 +304,43 @@ const convertFromHTML = (input, defaultTextBlock) => {
         );
       }
       // Start new panel
-      currentAccordionPanel = {
-        '@type': 'accordionPanel',
-        title: el.textContent,
-        blocks: {},
-        blocks_layout: { items: [] },
-        id: generateId(),
-      };
-    } else {
-      // Handle images and captions
-      if (el.tagName === 'IMG') {
-        const nextEl = elements[i + 1];
-        blocks.push(blockFromElement(el, defaultTextBlock, href, nextEl));
-        if (
-          nextEl &&
-          nextEl.tagName === 'P' &&
-          nextEl.classList.contains('richtext__imagelegend')
-        ) {
-          i++; // Skip the caption element
-        }
-      } else {
-        for (const child of children) {
-          // With children nodes, we keep the wrapper only
-          // if at least one child is not in elementsWithConverters
-          const tmpResult = extractElementsWithConverters(
-            child,
-            defaultTextBlock,
-            href,
-          );
-          if (tmpResult.length > 0) {
-            blocks.push(...tmpResult);
+      currentAccordionPanel = isTabNavigation
+        ? {
+            '@type': 'tab',
+            title: el.textContent,
+            blocks: {},
+            blocks_layout: { items: [] },
+            id: generateId(),
           }
+        : {
+            '@type': 'accordionPanel',
+            title: el.textContent,
+            blocks: {},
+            blocks_layout: { items: [] },
+            id: generateId(),
+          };
+    } else {
+      for (const child of children) {
+        // With children nodes, we keep the wrapper only
+        // if at least one child is not in elementsWithConverters
+        if (skippableElements && skippableElements.includes(child)) {
+          continue;
         }
-        if (shouldKeepWrapper(el)) {
-          blocks.push(blockFromElement(el, defaultTextBlock));
+
+        const tmpResult = extractElementsWithConverters(
+          child,
+          defaultTextBlock,
+          href,
+          elements,
+          i,
+          skippableElements,
+        );
+        if (tmpResult.length > 0) {
+          blocks.push(...tmpResult);
         }
+      }
+      if (shouldKeepWrapper(el)) {
+        blocks.push(blockFromElement(el, defaultTextBlock));
       }
 
       if (isInsideAccordion && currentAccordionPanel) {

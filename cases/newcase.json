@@ -1,298 +1,377 @@
 [
   {
-    "@type": "accordion",
-    "collapsed": false,
-    "data": {
-      "blocks": {
-        "uztxb5m4j": {
-          "@type": "accordionPanel",
-          "title": "Gross ohne Umlauf",
-          "blocks": {
-            "x46175m8e": {
-              "@type": "image",
-              "url": "../../../../resolveuid/daa75bd0f5d141ab8e32bdeb9f228587",
-              "alt": "",
-              "title": "",
-              "format": "large",
-              "align": "center",
-              "size": "l",
-              "linktype": "image",
-              "val": "daa75bd0f5d141ab8e32bdeb9f228587"
-            },
-            "0is8p5trw": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "text": "Lorem ipsum dolor sit amet. "
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "Lorem ipsum dolor sit amet. "
-            },
-            "yk42dlrft": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "text": "Bildlegende"
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "Bildlegende"
-            },
-            "i6heyxy4a": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "text": "Mehr Text"
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "Mehr Text"
-            }
-          },
-          "blocks_layout": {
-            "items": [
-              "x46175m8e",
-              "0is8p5trw",
-              "yk42dlrft",
-              "i6heyxy4a"
-            ]
-          },
-          "id": "uztxb5m4j"
-        },
-        "4o30k5glg": {
-          "@type": "accordionPanel",
-          "title": "Buttons",
-          "blocks": {
-            "wqhghcbic": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "text": "Text"
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "Text"
-            },
-            "9gdhudvq5": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "type": "link",
-                      "data": {
-                        "url": "https://www.google.ch",
-                        "title": null,
-                        "target": null
-                      },
-                      "children": [
-                        {
-                          "text": "This is a button!"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "This is a button!"
-            },
-            "fsgm3vybm": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "type": "link",
-                      "data": {
-                        "url": "https://www.google.ch",
-                        "title": null,
-                        "target": null
-                      },
-                      "children": [
-                        {
-                          "text": "This is a secondary button - white instead of black"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "This is a secondary button - white instead of black"
-            },
-            "beoaz07xo": {
-              "@type": "slate",
-              "value": [
-                {
-                  "type": "p",
-                  "children": [
-                    {
-                      "text": "Mehr Text"
-                    }
-                  ]
-                }
-              ],
-              "plaintext": "Mehr Text"
-            }
-          },
-          "blocks_layout": {
-            "items": [
-              "wqhghcbic",
-              "9gdhudvq5",
-              "fsgm3vybm",
-              "beoaz07xo"
-            ]
-          },
-          "id": "4o30k5glg"
-        },
-        "wz122mz32": {
-          "@type": "accordionPanel",
-          "title": "Tabelle",
-          "blocks": {
-            "vx3xqfj0b": {
-              "@type": "slateTable",
-              "table": {
-                "basic": false,
-                "celled": true,
-                "compact": false,
-                "fixed": true,
-                "inverted": false,
-                "rows": [
-                  {
-                    "key": "ek3lr",
-                    "cells": [
-                      {
-                        "key": "36f11",
-                        "type": "header",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Tabelle Reihe 1 Feld 1"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "key": "rbut",
-                        "type": "header",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Tabelle Reihe 1 Feld 2"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "key": "4fpfi",
-                        "type": "header",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Tabelle Reihe 1 Feld 3"
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "key": "1l0fi",
-                    "cells": [
-                      {
-                        "key": "1qkdn",
-                        "type": "data",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Normale Reihe"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "key": "fs6hq",
-                        "type": "data",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Noramle"
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "key": "cb134",
-                        "type": "data",
-                        "value": [
-                          {
-                            "type": "div",
-                            "children": [
-                              {
-                                "text": "Reihe"
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ],
-                "striped": false
+    "cells": [
+      {
+        "key": "9t7qt",
+        "type": "header",
+        "value": [
+          {
+            "children": [
+              {
+                "text": ""
               }
-            }
-          },
-          "blocks_layout": {
-            "items": [
-              "vx3xqfj0b"
-            ]
-          },
-          "id": "wz122mz32"
-        }
+            ],
+            "type": "div"
+          }
+        ]
       },
-      "blocks_layout": {
-        "items": [
-          "uztxb5m4j",
-          "4o30k5glg",
-          "wz122mz32"
+      {
+        "key": "5pspl",
+        "type": "header",
+        "value": [
+          {
+            "children": [
+              {
+                "text": ""
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "4ov44",
+        "type": "header",
+        "value": [
+          {
+            "children": [
+              {
+                "text": ""
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "3v42r",
+        "type": "header",
+        "value": [
+          {
+            "children": [
+              {
+                "text": ""
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "a1bo9",
+        "type": "header",
+        "value": [
+          {
+            "children": [
+              {
+                "text": ""
+              }
+            ],
+            "type": "div"
+          }
         ]
       }
-    },
-    "filtering": false,
-    "non_exclusive": false,
-    "right_arrows": true
+    ],
+    "key": "f2usm"
+  },
+  {
+    "cells": [
+      {
+        "key": "42pea",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "Mit einer Tabelle"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "4av5j",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "ohne Headers"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "5ncsi",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "und ohne sonst was"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "8l50b",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "sondern einfach"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "1b53l",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "fünf Spalten"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      }
+    ],
+    "key": "136sn"
+  },
+  {
+    "cells": [
+      {
+        "key": "8rgul",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "und "
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "2gld5",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "vier"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "8gut4",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "Reihen."
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "7oo8b",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "1"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "bsskk",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "2"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      }
+    ],
+    "key": "2cfbl"
+  },
+  {
+    "cells": [
+      {
+        "key": "79pel",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "3"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "a2so",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "4"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "9g9kf",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "5"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "dkqug",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "6"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "477f4",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "7"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      }
+    ],
+    "key": "b46ce"
+  },
+  {
+    "cells": [
+      {
+        "key": "2gpd1",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "8"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "77hj7",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "9"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "4643q",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "10"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "2knto",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "11"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      },
+      {
+        "key": "8b1s7",
+        "type": "data",
+        "value": [
+          {
+            "children": [
+              {
+                "text": "12"
+              }
+            ],
+            "type": "div"
+          }
+        ]
+      }
+    ],
+    "key": "9cg0s"
   }
 ]

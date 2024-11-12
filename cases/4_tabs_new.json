@@ -1,0 +1,561 @@
+[
+  {
+    "data": {
+      "blocks": {
+        "107be19f-3259-4f3b-a55f-d99ebf1d3946": {
+          "@type": "tab",
+          "blocks": {
+            "4cbeec30-d6e1-4f07-a88c-335808160257": {
+              "@type": "slate",
+              "plaintext": "Dieses Bild hat Textumlauf aktiv, also sollte dieser Text um das Bild herum laufen.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Dieses Bild hat Textumlauf aktiv, also sollte dieser Text um das Bild herum laufen."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "68a17bb9-2f46-4b13-ac77-e02f236f5fca": {
+              "@type": "slate",
+              "plaintext": "Hier haben wir eine Auflistung mit 3 Elementen",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "text": "Hier haben wir eine Auflistung"
+                        }
+                      ],
+                      "type": "li"
+                    },
+                    {
+                      "children": [
+                        {
+                          "text": "mit 3"
+                        }
+                      ],
+                      "type": "li"
+                    },
+                    {
+                      "children": [
+                        {
+                          "text": "Elementen"
+                        }
+                      ],
+                      "type": "li"
+                    }
+                  ],
+                  "type": "ul"
+                }
+              ]
+            },
+            "7c57d6be-fa3c-4348-9a6b-ac8820704830": {
+              "@type": "image",
+              "align": "left",
+              "alt": "",
+              "format": "third",
+              "image_field": "image",
+              "size": "l",
+              "url": "../../../resolveuid/b3590d0f9d8841e6b8a9009180f14d3a"
+            },
+            "c8b7b53b-c1de-4ecf-9c67-84fe52e8a004": {
+              "@type": "slate",
+              "plaintext": "Und dazu ein Bild:",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Und dazu ein Bild:"
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "68a17bb9-2f46-4b13-ac77-e02f236f5fca",
+              "c8b7b53b-c1de-4ecf-9c67-84fe52e8a004",
+              "7c57d6be-fa3c-4348-9a6b-ac8820704830",
+              "4cbeec30-d6e1-4f07-a88c-335808160257"
+            ]
+          },
+          "title": "Das ist der zweite Tab"
+        },
+        "c987dc45-b09c-4cf4-8df0-10cae9e083aa": {
+          "@type": "tab",
+          "blocks": {
+            "270d1fa8-aa20-440f-a42f-bbee7aa264d0": {
+              "@type": "slate",
+              "plaintext": "Mehr gibt es nicht.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Mehr gibt es nicht."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            },
+            "eaa0a49c-c939-4986-b351-22b566cc8df3": {
+              "@type": "slate",
+              "plaintext": "Das ist ein Text im ersten Tab des Tabulators.",
+              "value": [
+                {
+                  "children": [
+                    {
+                      "text": "Das ist ein Text im ersten Tab des Tabulators."
+                    }
+                  ],
+                  "type": "p"
+                }
+              ]
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "eaa0a49c-c939-4986-b351-22b566cc8df3",
+              "270d1fa8-aa20-440f-a42f-bbee7aa264d0"
+            ]
+          },
+          "title": "Tab 1 Titel"
+        },
+        "f196c741-92d9-4d71-b075-d47d6358655e": {
+          "@type": "tab",
+          "blocks": {
+            "67049ffc-9b01-4584-a4b6-ff06b53ac0e9": {
+              "table_field": {
+                "hideHeaders": true
+              },
+              "@type": "slateTable",
+              "table": {
+                "hideHeaders": false,
+                "fixed": true,
+                "compact": false,
+                "basic": true,
+                "celled": false,
+                "inverted": false,
+                "striped": false,
+                "rows": [
+                  {
+                    "key": "433g0",
+                    "cells": [
+                      {
+                        "key": "8jf04",
+                        "type": "header",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": ""
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "1vhr1",
+                        "type": "header",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": ""
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "3lic7",
+                        "type": "header",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": ""
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "a89pv",
+                        "type": "header",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": ""
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "c4na4",
+                        "type": "header",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": ""
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "key": "ccnte",
+                    "cells": [
+                      {
+                        "key": "30ddb",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "Mit einer Tabelle"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "4mu0h",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "ohne Headers"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "3qpba",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "und ohne sonst was"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "4cvsq",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "sondern einfach"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "a7kul",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "f\u00fcnf Spalten"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "key": "au8ss",
+                    "cells": [
+                      {
+                        "key": "bf0at",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "und"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "fhhon",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "vier"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "7k5n8",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "Reihen."
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "76cab",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "1"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "9htbv",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "2"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "key": "a5op7",
+                    "cells": [
+                      {
+                        "key": "2p9hf",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "3"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "eqd7",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "4"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "eebeb",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "5"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "kdtv",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "6"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "fvmtg",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "7"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "key": "9uk93",
+                    "cells": [
+                      {
+                        "key": "3iucr",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "8"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "6bch",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "9"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "bhl29",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "10"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "5href",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "11"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "key": "43qn9",
+                        "type": "data",
+                        "value": [
+                          {
+                            "type": "p",
+                            "children": [
+                              {
+                                "text": "12"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            "8f644474-c2f7-4a6f-952d-cd56ddb161e9": {
+              "@type": "slate",
+              "value": [
+                {
+                  "type": "p",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ],
+              "plaintext": ""
+            }
+          },
+          "blocks_layout": {
+            "items": [
+              "67049ffc-9b01-4584-a4b6-ff06b53ac0e9",
+              "8f644474-c2f7-4a6f-952d-cd56ddb161e9"
+            ]
+          },
+          "title": "Und hier ist der dritte Tab Titel"
+        }
+      },
+      "blocks_layout": {
+        "items": [
+          "c987dc45-b09c-4cf4-8df0-10cae9e083aa",
+          "107be19f-3259-4f3b-a55f-d99ebf1d3946",
+          "f196c741-92d9-4d71-b075-d47d6358655e"
+        ]
+      }
+    },
+    "variation": "default",
+    "@type": "tabs_block"
+  }
+]

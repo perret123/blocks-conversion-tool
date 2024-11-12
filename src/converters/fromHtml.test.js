@@ -1,7 +1,7 @@
 import convertFromHTML from './fromHtml.js';
 
 describe('convertFromHTML function', () => {
-  describe('Example 1: Text Styles', () => {
+  describe('FHNW Example 1: Text Styles', () => {
     const html = `
       <p>This is a normal richtext field.<br />It is possible to make linebreaks too inside a paragraph.</p>
       <p>This is the second paragraph.</p>
@@ -125,6 +125,783 @@ describe('convertFromHTML function', () => {
         expect(block.plaintext).toContain(
           'There could be more headlines in the same style (h4-h6).',
         );
+      });
+    });
+  });
+
+  describe('FHNW Example 2: Accordion with Buttons and Tables', () => {
+    const html = `<p class="tiny_accordeon_title">Gross ohne Umlauf</p>
+    <p>Lorem ipsum dolor sit amet. <img src="../../../../resolveuid/daa75bd0f5d141ab8e32bdeb9f228587" class="fhnw-tiny-large" data-linktype="image" data-val="daa75bd0f5d141ab8e32bdeb9f228587" /></p>
+    <p class="richtext__imagelegend">Bildlegende</p>
+    <p>Mehr Text</p>
+    <p class="tiny_accordeon_title">Buttons</p>
+    <p>Text</p>
+    <p><a href="https://www.google.ch" class="button button__primary tiny_link_button_primary" data-linktype="external" data-val="https://www.google.ch">This is a button!</a></p>
+    <p><a href="https://www.google.ch" class="button button__secondary tiny_link_button_secondary" data-linktype="external" data-val="https://www.google.ch">This is a secondary button - white instead of black</a></p>
+    <p>Mehr Text</p>
+    <p class="tiny_accordeon_title">Tabelle</p>
+    <table border="1" style="border-collapse: collapse; width: 56.25%;">
+    <tbody>
+    <tr>
+    <th style="width: 25%;">Tabelle Reihe 1 Feld 1</th>
+    <th style="width: 25%;">Tabelle Reihe 1 Feld 2</th>
+    <th style="width: 25%;">Tabelle Reihe 1 Feld 3</th>
+    </tr>
+    <tr>
+    <td style="width: 25%;">Normale Reihe</td>
+    <td style="width: 25%;">Noramle</td>
+    <td style="width: 25%;">Reihe</td>
+    </tr>
+    </tbody>
+    </table>`;
+
+    describe('with slate converter', () => {
+      const data = convertFromHTML(html, 'slate');
+
+      test('should return the correct blocks', () => {
+        expect(data).toHaveLength(1);
+        expect(data[0]).toMatchObject({
+          '@type': 'accordion',
+          right_arrows: true,
+          collapsed: false,
+          non_exclusive: false,
+          filtering: false,
+          data: {
+            blocks: expect.any(Object),
+            blocks_layout: {
+              items: expect.any(Array),
+            },
+          },
+        });
+      });
+
+      test('should contain 3 accordion items', () => {
+        const accordionBlock = data[0];
+        const accordionItems = accordionBlock.data.blocks;
+        const accordionLayoutItems = accordionBlock.data.blocks_layout.items;
+
+        expect(Object.keys(accordionItems)).toHaveLength(3);
+        expect(accordionLayoutItems).toHaveLength(3);
+      });
+
+      describe('Accordion Item 1: "Gross ohne Umlauf"', () => {
+        let accordionItem1;
+        let item1Blocks;
+        let item1LayoutItems;
+
+        beforeAll(() => {
+          const accordionBlock = data[0];
+          const accordionItems = accordionBlock.data.blocks;
+          const findAccordionItemByTitle = (title) => {
+            const itemId = Object.keys(accordionItems).find(
+              (id) => accordionItems[id].title === title,
+            );
+            return accordionItems[itemId];
+          };
+          accordionItem1 = findAccordionItemByTitle('Gross ohne Umlauf');
+          item1Blocks = accordionItem1.blocks;
+          item1LayoutItems = accordionItem1.blocks_layout.items;
+        });
+
+        test('should have correct structure', () => {
+          expect(accordionItem1).toMatchObject({
+            '@type': 'accordionPanel',
+            title: 'Gross ohne Umlauf',
+            blocks: expect.any(Object),
+            blocks_layout: {
+              items: expect.any(Array),
+            },
+          });
+        });
+
+        test('should contain 4 blocks', () => {
+          expect(item1LayoutItems).toHaveLength(3);
+        });
+
+        test('Block 1: should be an image block', () => {
+          const block1 = item1Blocks[item1LayoutItems[0]];
+          expect(block1).toMatchObject({
+            '@type': 'image',
+            url: '../../../../resolveuid/daa75bd0f5d141ab8e32bdeb9f228587',
+            alt: '',
+            title: '',
+            format: 'large',
+            size: 'l',
+            description: 'Bildlegende',
+          });
+        });
+
+        test('Block 2: should be a slate block with text', () => {
+          const block2 = item1Blocks[item1LayoutItems[1]];
+          expect(block2).toMatchObject({
+            '@type': 'slate',
+            plaintext: 'Lorem ipsum dolor sit amet. ',
+            value: [
+              {
+                type: 'p',
+                children: [{ text: 'Lorem ipsum dolor sit amet. ' }],
+              },
+            ],
+          });
+        });
+
+        test('Block 3: should be a slate block with more text', () => {
+          const block3 = item1Blocks[item1LayoutItems[2]];
+          expect(block3).toMatchObject({
+            '@type': 'slate',
+            plaintext: 'Mehr Text',
+            value: [
+              {
+                type: 'p',
+                children: [{ text: 'Mehr Text' }],
+              },
+            ],
+          });
+        });
+      });
+
+      describe('Accordion Item 2: "Buttons"', () => {
+        let accordionItem2;
+        let item2Blocks;
+        let item2LayoutItems;
+
+        beforeAll(() => {
+          const accordionBlock = data[0];
+          const accordionItems = accordionBlock.data.blocks;
+          const findAccordionItemByTitle = (title) => {
+            const itemId = Object.keys(accordionItems).find(
+              (id) => accordionItems[id].title === title,
+            );
+            return accordionItems[itemId];
+          };
+          accordionItem2 = findAccordionItemByTitle('Buttons');
+          item2Blocks = accordionItem2.blocks;
+          item2LayoutItems = accordionItem2.blocks_layout.items;
+        });
+
+        test('should have correct structure', () => {
+          expect(accordionItem2).toMatchObject({
+            '@type': 'accordionPanel',
+            title: 'Buttons',
+            blocks: expect.any(Object),
+            blocks_layout: {
+              items: expect.any(Array),
+            },
+          });
+        });
+
+        test('should contain 4 blocks', () => {
+          expect(item2LayoutItems).toHaveLength(4);
+        });
+
+        test('Block 1: should be a slate block with text', () => {
+          const block5 = item2Blocks[item2LayoutItems[0]];
+          expect(block5).toMatchObject({
+            '@type': 'slate',
+            plaintext: 'Text',
+            value: [
+              {
+                type: 'p',
+                children: [{ text: 'Text' }],
+              },
+            ],
+          });
+        });
+
+        test('Block 2: should be a button block', () => {
+          const block6 = item2Blocks[item2LayoutItems[1]];
+          expect(block6).toMatchObject({
+            '@type': '__button',
+            title: 'This is a button!',
+            href: [
+              {
+                '@id': 'https://www.google.ch/',
+                title: 'This is a button!',
+              },
+            ],
+            inneralign: 'left',
+            styles: {
+              variation: 'black',
+            },
+          });
+        });
+
+        test('Block 3: should be a secondary button block', () => {
+          const block7 = item2Blocks[item2LayoutItems[2]];
+          expect(block7).toMatchObject({
+            '@type': '__button',
+            title: 'This is a secondary button - white instead of black',
+            href: [
+              {
+                '@id': 'https://www.google.ch/',
+                title: 'This is a secondary button - white instead of black',
+              },
+            ],
+            inneralign: 'left',
+            styles: {
+              variation: 'white',
+            },
+          });
+        });
+
+        test('Block 4: should be a slate block with more text', () => {
+          const block8 = item2Blocks[item2LayoutItems[3]];
+          expect(block8).toMatchObject({
+            '@type': 'slate',
+            plaintext: 'Mehr Text',
+            value: [
+              {
+                type: 'p',
+                children: [{ text: 'Mehr Text' }],
+              },
+            ],
+          });
+        });
+      });
+
+      describe('Accordion Item 3: "Tabelle"', () => {
+        let accordionItem3;
+        let item3Blocks;
+        let item3LayoutItems;
+
+        beforeAll(() => {
+          const accordionBlock = data[0];
+          const accordionItems = accordionBlock.data.blocks;
+          const findAccordionItemByTitle = (title) => {
+            const itemId = Object.keys(accordionItems).find(
+              (id) => accordionItems[id].title === title,
+            );
+            return accordionItems[itemId];
+          };
+          accordionItem3 = findAccordionItemByTitle('Tabelle');
+          item3Blocks = accordionItem3.blocks;
+          item3LayoutItems = accordionItem3.blocks_layout.items;
+        });
+
+        test('should have correct structure', () => {
+          expect(accordionItem3).toMatchObject({
+            '@type': 'accordionPanel',
+            title: 'Tabelle',
+            blocks: expect.any(Object),
+            blocks_layout: {
+              items: expect.any(Array),
+            },
+          });
+        });
+
+        test('should contain 1 block', () => {
+          expect(item3LayoutItems).toHaveLength(1);
+        });
+
+        test('Block 1: should be a slateTable block', () => {
+          const block9 = item3Blocks[item3LayoutItems[0]];
+          expect(block9).toMatchObject({
+            '@type': 'slateTable',
+            table: {
+              basic: false,
+              celled: true,
+              compact: false,
+              fixed: true,
+              inverted: false,
+              striped: false,
+              rows: expect.any(Array),
+            },
+          });
+
+          const tableRows = block9.table.rows;
+          expect(tableRows).toHaveLength(2); // Header row and one data row
+
+          // Header row
+          const headerRow = tableRows[0];
+          expect(headerRow.cells).toHaveLength(3);
+          expect(headerRow.cells[0].type).toBe('header');
+          expect(headerRow.cells[0].value[0]).toMatchObject({
+            type: 'div',
+            children: [{ text: 'Tabelle Reihe 1 Feld 1' }],
+          });
+
+          const dataRow = tableRows[1];
+          expect(dataRow.cells).toHaveLength(3);
+          expect(dataRow.cells[0].type).toBe('data');
+          expect(dataRow.cells[0].value[0]).toMatchObject({
+            type: 'div',
+            children: [{ text: 'Normale Reihe' }],
+          });
+        });
+      });
+    });
+  });
+});
+
+describe('convertFromHTML function', () => {
+  describe('FHNW Example 3: Images with Various Formats', () => {
+    const html = `
+      <p>We had many different image formats:</p>
+      <h3>Big, no text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-large"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /> </p>
+      <p class="richtext__imagelegend">Image legend text! Should belong to the image.</p>
+      <h3>Big, with text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-large-float"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /></p>
+      <p>Example text in between</p>
+      <h3>Third, no text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-onethird-no-float"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /> </p>
+      <h3>Third, with text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-onethird"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /></p>
+      <p class="richtext__imagelegend">Image legend text! Should belong to the image.</p>
+      <h3>Half, no text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-square"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /> </p>
+      <h3>Half, with text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-square-float"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /></p>
+      <h3>Portrait, with text wrap</h3>
+      <p><img title="Title of the Image" class="fhnw-tiny-portrait"
+          src="../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466"
+          alt="Alternative text of the image" data-linktype="image"
+          data-val="f9bf126e6be649de8a8fa02bf20d3466" /></p>
+    `;
+
+    describe('with slate converter', () => {
+      const result = convertFromHTML(html, 'slate');
+
+      test('result should be an array', () => {
+        expect(result).toBeInstanceOf(Array);
+      });
+
+      test('should return an array of 16 blocks', () => {
+        expect(result).toHaveLength(16);
+      });
+
+      test('Block 0: should be a slate block with introductory text', () => {
+        const block = result[0];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toBe('We had many different image formats:');
+        expect(block.value[0].type).toBe('p');
+        expect(block.value[0].children[0].text).toBe(
+          'We had many different image formats:',
+        );
+      });
+
+      test('Block 1: should be a heading block with heading "Big, no text wrap"', () => {
+        const block = result[1];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Big, no text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 2: should be an image block with format "large" and description', () => {
+        const block = result[2];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('large');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('center');
+        expect(block.description).toBe(
+          'Image legend text! Should belong to the image.',
+        );
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 3: should be a heading block with heading "Big, with text wrap"', () => {
+        const block = result[3];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Big, with text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 4: should be an image block with format "large"', () => {
+        const block = result[4];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('large');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('left');
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 5: should be a slate block with text "Example text in between"', () => {
+        const block = result[5];
+        expect(block['@type']).toBe('slate');
+        expect(block.plaintext).toBe('Example text in between');
+        expect(block.value[0].type).toBe('p');
+        expect(block.value[0].children[0].text).toBe('Example text in between');
+      });
+
+      test('Block 6: should be a heading block with heading "Third, no text wrap"', () => {
+        const block = result[6];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Third, no text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 7: should be an image block with format "third"', () => {
+        const block = result[7];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('third');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('center');
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 8: should be a heading block with heading "Third, with text wrap"', () => {
+        const block = result[8];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Third, with text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 9: should be an image block with format "third" and description', () => {
+        const block = result[9];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('third');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('left');
+        expect(block.description).toBe(
+          'Image legend text! Should belong to the image.',
+        );
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 10: should be a heading block with heading "Half, no text wrap"', () => {
+        const block = result[10];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Half, no text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 11: should be an image block with format "half"', () => {
+        const block = result[11];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('half');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('center');
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 12: should be a heading block with heading "Half, with text wrap"', () => {
+        const block = result[12];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Half, with text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 13: should be an image block with format "half"', () => {
+        const block = result[13];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('half');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('left');
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+
+      test('Block 14: should be a heading block with heading "Portrait, with text wrap"', () => {
+        const block = result[14];
+        expect(block['@type']).toBe('heading');
+        expect(block.heading).toBe('Portrait, with text wrap');
+        expect(block.tag).toBe('h3');
+        expect(block.alignment).toBe('left');
+      });
+
+      test('Block 15: should be an image block with format "portrait"', () => {
+        const block = result[15];
+        expect(block['@type']).toBe('image');
+        expect(block.format).toBe('portrait');
+        expect(block.size).toBe('l');
+        expect(block.align).toBe('left');
+        expect(block.url).toBe(
+          '../../../../resolveuid/f9bf126e6be649de8a8fa02bf20d3466',
+        );
+      });
+    });
+  });
+});
+
+describe('convertFromHTML function', () => {
+  describe('FHNW Example 4: Tabs with Content', () => {
+    const html = `
+      <p class="tiny_tabnavigation_title">Tab 1 Titel</p>
+      <p>Das ist ein Text im ersten Tab des Tabulators.</p>
+      <p>Mehr gibt es nicht.</p>
+      <p class="tiny_tabnavigation_title">Das ist der zweite Tab</p>
+      <ul>
+        <li>Hier haben wir eine Auflistung</li>
+        <li>mit 3</li>
+        <li>Elementen</li>
+      </ul>
+      <p>Und dazu ein Bild:</p>
+      <p><img alt="Ein Bild mit einem coolen alt-Text sogar!" src="../../../../../resolveuid/77e8730c812f4fac973e021b47ec9b1b" class="fhnw-tiny-onethird" data-linktype="image" data-val="77e8730c812f4fac973e021b47ec9b1b" /></p>
+      <p>Dieses Bild hat Textumlauf aktiv, also sollte dieser Text um das Bild herum laufen.</p>
+      <p class="tiny_tabnavigation_title">Und hier ist der dritte Tab Titel</p>
+      <table border="1" style="border-collapse: collapse; width: 100%;">
+      <tbody>
+      <tr>
+      <td style="width: 20%;">Mit einer Tabelle</td>
+      <td style="width: 20%;">ohne Headers</td>
+      <td style="width: 20%;">und ohne sonst was</td>
+      <td style="width: 20%;">sondern einfach</td>
+      <td style="width: 20%;">fünf Spalten</td>
+      </tr>
+      <tr>
+      <td style="width: 20%;">und </td>
+      <td style="width: 20%;">vier</td>
+      <td style="width: 20%;">Reihen.</td>
+      <td style="width: 20%;">1</td>
+      <td style="width: 20%;">2</td>
+      </tr>
+      <tr>
+      <td style="width: 20%;">3</td>
+      <td style="width: 20%;">4</td>
+      <td style="width: 20%;">5</td>
+      <td style="width: 20%;">6</td>
+      <td style="width: 20%;">7</td>
+      </tr>
+      <tr>
+      <td style="width: 20%;">8</td>
+      <td style="width: 20%;">9</td>
+      <td style="width: 20%;">10</td>
+      <td style="width: 20%;">11</td>
+      <td style="width: 20%;">12</td>
+      </tr>
+      </tbody>
+      </table>
+    `;
+
+    describe('with slate converter', () => {
+      const result = convertFromHTML(html, 'slate');
+
+      test('result should be an array', () => {
+        expect(result).toBeInstanceOf(Array);
+      });
+
+      test('should return an array with 1 block', () => {
+        expect(result).toHaveLength(1);
+      });
+
+      test('Block 0: should be a tabs_block with the correct structure', () => {
+        const block = result[0];
+        expect(block['@type']).toBe('tabs_block');
+        expect(block.data).toBeDefined();
+        expect(block.data.blocks).toBeDefined();
+        expect(block.data.blocks_layout).toBeDefined();
+        expect(block.data.blocks_layout.items).toBeInstanceOf(Array);
+      });
+
+      test('Tabs block should contain 3 tabs', () => {
+        const tabsBlock = result[0];
+        const tabs = tabsBlock.data.blocks;
+        const tabsLayout = tabsBlock.data.blocks_layout.items;
+        expect(tabsLayout).toHaveLength(3);
+        expect(Object.keys(tabs)).toHaveLength(3);
+      });
+
+      describe('Tab 1: "Tab 1 Titel"', () => {
+        let tabId, tabBlock;
+        beforeAll(() => {
+          const tabsBlock = result[0];
+          const tabs = tabsBlock.data.blocks;
+          tabId = tabsBlock.data.blocks_layout.items.find(
+            (id) => tabs[id].title === 'Tab 1 Titel',
+          );
+          tabBlock = tabs[tabId];
+        });
+
+        test('Tab should be of type "tab" with correct title', () => {
+          expect(tabBlock['@type']).toBe('tab');
+          expect(tabBlock.title).toBe('Tab 1 Titel');
+        });
+
+        test('Tab should contain 2 content blocks', () => {
+          expect(tabBlock.blocks_layout.items).toHaveLength(2);
+          expect(Object.keys(tabBlock.blocks)).toHaveLength(2);
+        });
+
+        test('First block should be a slate block with text "Das ist ein Text im ersten Tab des Tabulators."', () => {
+          const blockId = tabBlock.blocks_layout.items[0];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slate');
+          expect(block.plaintext).toBe(
+            'Das ist ein Text im ersten Tab des Tabulators.',
+          );
+        });
+
+        test('Second block should be a slate block with text "Mehr gibt es nicht."', () => {
+          const blockId = tabBlock.blocks_layout.items[1];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slate');
+          expect(block.plaintext).toBe('Mehr gibt es nicht.');
+        });
+      });
+
+      describe('Tab 2: "Das ist der zweite Tab"', () => {
+        let tabId, tabBlock;
+        beforeAll(() => {
+          const tabsBlock = result[0];
+          const tabs = tabsBlock.data.blocks;
+          tabId = tabsBlock.data.blocks_layout.items.find(
+            (id) => tabs[id].title === 'Das ist der zweite Tab',
+          );
+          tabBlock = tabs[tabId];
+        });
+
+        test('Tab should be of type "tab" with correct title', () => {
+          expect(tabBlock['@type']).toBe('tab');
+          expect(tabBlock.title).toBe('Das ist der zweite Tab');
+        });
+
+        test('Tab should contain 4 content blocks', () => {
+          expect(tabBlock.blocks_layout.items).toHaveLength(4);
+          expect(Object.keys(tabBlock.blocks)).toHaveLength(4);
+        });
+
+        test('First block should be a slate block with unordered list', () => {
+          const blockId = tabBlock.blocks_layout.items[0];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slate');
+          expect(block.value[0].type).toBe('ul');
+          const listItems = block.value[0].children;
+          expect(listItems).toHaveLength(3);
+          expect(listItems[0].children[0].text).toBe(
+            'Hier haben wir eine Auflistung',
+          );
+          expect(listItems[1].children[0].text).toBe('mit 3');
+          expect(listItems[2].children[0].text).toBe('Elementen');
+        });
+
+        test('Second block should be a slate block with text "Und dazu ein Bild:"', () => {
+          const blockId = tabBlock.blocks_layout.items[1];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slate');
+          expect(block.plaintext).toBe('Und dazu ein Bild:');
+        });
+
+        test('Third block should be an image block', () => {
+          const blockId = tabBlock.blocks_layout.items[2];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('image');
+          expect(block.url).toBe(
+            '../../../../../resolveuid/77e8730c812f4fac973e021b47ec9b1b',
+          );
+          expect(block.align).toBe('left');
+          expect(block.format).toBe('third');
+          expect(block.alt).toBe('Ein Bild mit einem coolen alt-Text sogar!');
+        });
+
+        test('Fourth block should be a slate block with text about the image', () => {
+          const blockId = tabBlock.blocks_layout.items[3];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slate');
+          expect(block.plaintext).toBe(
+            'Dieses Bild hat Textumlauf aktiv, also sollte dieser Text um das Bild herum laufen.',
+          );
+        });
+      });
+
+      describe('Tab 3: "Und hier ist der dritte Tab Titel"', () => {
+        let tabId, tabBlock;
+        beforeAll(() => {
+          const tabsBlock = result[0];
+          const tabs = tabsBlock.data.blocks;
+          tabId = tabsBlock.data.blocks_layout.items.find(
+            (id) => tabs[id].title === 'Und hier ist der dritte Tab Titel',
+          );
+          tabBlock = tabs[tabId];
+        });
+
+        test('Tab should be of type "tab" with correct title', () => {
+          expect(tabBlock['@type']).toBe('tab');
+          expect(tabBlock.title).toBe('Und hier ist der dritte Tab Titel');
+        });
+
+        test('Tab should contain 1 content block', () => {
+          expect(tabBlock.blocks_layout.items).toHaveLength(1);
+          expect(Object.keys(tabBlock.blocks)).toHaveLength(1);
+        });
+
+        test('First block should be a slateTable block', () => {
+          const blockId = tabBlock.blocks_layout.items[0];
+          const block = tabBlock.blocks[blockId];
+          expect(block['@type']).toBe('slateTable');
+          expect(block.table).toBeDefined();
+          expect(block.table.rows).toBeInstanceOf(Array);
+          expect(block.table.rows).toHaveLength(5); // Four data rows, one invisible header
+          expect(block.table.hideHeaders).toBe(true);
+        });
+
+        test('Table should have correct data', () => {
+          const blockId = tabBlock.blocks_layout.items[0];
+          const block = tabBlock.blocks[blockId];
+          const rows = block.table.rows;
+
+          // First row cells (row 0 is invisible header)
+          expect(rows[1].cells[0].value[0].children[0].text).toBe(
+            'Mit einer Tabelle',
+          );
+          expect(rows[1].cells[1].value[0].children[0].text).toBe(
+            'ohne Headers',
+          );
+          expect(rows[1].cells[2].value[0].children[0].text).toBe(
+            'und ohne sonst was',
+          );
+          expect(rows[1].cells[3].value[0].children[0].text).toBe(
+            'sondern einfach',
+          );
+          expect(rows[1].cells[4].value[0].children[0].text).toBe(
+            'fünf Spalten',
+          );
+
+          // Second row cells
+          expect(rows[2].cells[0].value[0].children[0].text).toBe('und ');
+          expect(rows[2].cells[1].value[0].children[0].text).toBe('vier');
+          expect(rows[2].cells[2].value[0].children[0].text).toBe('Reihen.');
+          expect(rows[2].cells[3].value[0].children[0].text).toBe('1');
+          expect(rows[2].cells[4].value[0].children[0].text).toBe('2');
+
+          // Third row cells
+          expect(rows[3].cells[0].value[0].children[0].text).toBe('3');
+          expect(rows[3].cells[1].value[0].children[0].text).toBe('4');
+          expect(rows[3].cells[2].value[0].children[0].text).toBe('5');
+          expect(rows[3].cells[3].value[0].children[0].text).toBe('6');
+          expect(rows[3].cells[4].value[0].children[0].text).toBe('7');
+
+          // Fourth row cells
+          expect(rows[4].cells[0].value[0].children[0].text).toBe('8');
+          expect(rows[4].cells[1].value[0].children[0].text).toBe('9');
+          expect(rows[4].cells[2].value[0].children[0].text).toBe('10');
+          expect(rows[4].cells[3].value[0].children[0].text).toBe('11');
+          expect(rows[4].cells[4].value[0].children[0].text).toBe('12');
+        });
       });
     });
   });

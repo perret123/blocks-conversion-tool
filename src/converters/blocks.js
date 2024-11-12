@@ -148,6 +148,26 @@ const videoBlock = (elem) => {
   return block;
 };
 
+const buttonBlock = (elem) => {
+  const block = {
+    '@type': '__button',
+    title: elem.textContent,
+    href: [
+      {
+        '@id': elem.href,
+        title: elem.textContent,
+      },
+    ],
+    inneralign: 'left',
+    styles: {
+      variation: elem.classList.contains('tiny_link_button_primary')
+        ? 'black'
+        : 'white',
+    },
+  };
+  return block;
+};
+
 const elementsWithConverters = {
   IMG: imageBlock,
   VIDEO: videoBlock,
@@ -168,4 +188,5 @@ export {
   headingBlock, // Export headingBlock
   getYTVideoId,
   elementsWithConverters,
+  buttonBlock,
 };
