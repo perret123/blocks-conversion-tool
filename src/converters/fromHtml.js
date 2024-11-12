@@ -264,7 +264,7 @@ const convertFromHTML = (input, defaultTextBlock) => {
     const href = el.getAttribute ? el.getAttribute('href') : null;
     const children = Array.from(el.childNodes);
 
-    // Check for accordion title
+    // Check for accordion/tab title
     if (
       el.tagName === 'P' &&
       (el.classList.contains('tiny_accordeon_title') ||
@@ -272,7 +272,7 @@ const convertFromHTML = (input, defaultTextBlock) => {
     ) {
       const isTabNavigation = el.classList.contains('tiny_tabnavigation_title');
 
-      // Start or continue an accordion
+      // Start or continue an accordion/tab navigation
       if (!isInsideAccordion) {
         isInsideAccordion = true;
         currentAccordion = isTabNavigation
